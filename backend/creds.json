@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "keywords-trends",
+  "private_key_id": "b4fdec0b0b9a7cc08fda6c5a0e01f9e248184e72",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDoavwbjtx2z06A\nDNp1eU36pRKtPGhoUo1oZ0Sgnsp3VlLIoa/Zm6lMYg8UFiXuwVJvU4cZPri1t2vy\ntcObWN5E/t3UmhLNXWEu2S0qpDv5pW100BkggBcL9Mue4iCitKMh3/W3HXhV0uNQ\nhHYDIZJxt9o3jiIPgftMAFtPeSIBbFQDkiuXOm8BooTokFzXu2u578y8ahH7oTXb\naVOjkPPfy1BGs3p0b9IX7pXSQ46N4jn6+lA1EBYlNBcdnpO+Jq57dndprvdj86fr\nj4LvNKq/aRKfTxTo7/fG6+nPkYsEL1Lpbfn8XibB0K5y1/A1yjP3BHxNX4jpSJuy\nuUNRI6exAgMBAAECggEANP+kcqJOqrcWNwP3Uv9w5T18N03Fnzhn741Q7HGZSMJC\nCWc5Yt1oqzbXKmTsjHfAFQvOjFatpx5m+scxDj0jHkeiDSd/Lx5imVzDvGwMEx8C\niTck67DZ0IunXRlCiOe5JXHdJb8OIEABPuydvpQKwWzD0ZRTNwcUZ13TdJlyRDFg\n2ee6BemVHHczivRnucZHRvASbx5kAZ3BSpzo8kPIxj7Vff7+i6UaLD4ILhg68gIH\nP+bliL5/q/ATMnM8tZbzs6TjZoCrtEn4hkZtc209yZW2wTQbjcuL2FTCgA8DVOL3\nrn6I8egX4gcDfroPGD/uq4/rh8ijbKFxGQTg7xLv+QKBgQD9Qxgs8pqfR4Z1V8gv\n/S/zG4IGPdZrplngIds1YpbWhAPo1PDeQlrj+AX1sJmOUoRQseDORsVEymPo71X/\nreotbRk+OxP3GrZi0iUTgZyXZqWgQpN354G3oEI2B7SCjEQqgGANQ+G2wsKLkI3N\nZT8Mpei5LcImYvoYtPB/2HkS3QKBgQDq7jQw5ETm4J8FFn3NUPtdHxYsrAI2p1Xu\nZg0gvkVSz/P7IBwsg47syFhOYn6IYKAJk65tv8z9j1aY+kcenT1Udwb22QonilA6\nPkE3bIUm2i5S54F4Md05pvt3hTOcN4Eluux6tDy3odFxsfb9Y4TXsBoBOZkiD0Wz\n8x8F0Rxo5QKBgFYVbC46+BuTsDxKbh0Brj6v5u5ALpXAoWPxnhTzQdoAXWPSnVyu\nqT47m6r7L/aUTa0wCP2USJEtSfBvCYgykRqHrsDcS9j+F2hXjYqnz5YWqc1jU8S5\nx/mmW1sKG20USEc6A2v+2sXIRWAy7kAWXevqqMPorclmcyPavLR33A9xAoGAB21w\niPsukn4XiPmlEJC24cLR2Ke3ijLQLLFdSOO7HVslw5LIUT/3jNTotdG3Xmhvpt3c\nbevad0nI2x1OklE2Vy1MMxG5mHZvAuhk93Oe4hOT01suZLZu4Bu/Z4/2icHXe3Hl\neBuqr8OV85pEzM4QrSEMMW24wbLp6T6OhIiP9WECgYAwE7lsqSwl6oW+lL5iLORy\nBT+sbERVyZ5ePqjwY8zIcpj9C61ge38Kd8e65ip731YhCe1g4jRc3+kUO9SjSh7x\nWjYNJpBykRtrsWrDdXmUUp9ykurEi5Q43MkmDWWHfOuX1RfrkmIAnjCMywTYfuiC\nzlZHlFoKnbhSwDX53gCa8g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "keyword-service@keywords-trends.iam.gserviceaccount.com",
+  "client_id": "108925585350142770805",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/keyword-service%40keywords-trends.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
