@@ -1,29 +1,27 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import KeywordTrendAnalyzer from './components/KeywordTrendAnalyzer';
+import YoutubeMetadataUpdater from './components/YoutubeMetadataUpdater';
+import YoutubeTopTrends from './components/YoutubeTopTrends';
 import Sidebar from './components/Sidebar';
-import HomePage from './pages/HomePage';
-import KeywordPage from './pages/KeywordPage';
-import YoutubeMetadataUpdaterPage from './pages/YoutubeMetadataUpdaterPage';
-import YoutubeTopTrendsPage from './pages/YoutubeTopTrendsPage';
+import './styles.css';
 
-const App = () => {
+function App() {
   return (
     <Router>
-      <div className="app">
-        <Navbar />
+      <div className="container">
         <Sidebar />
-        <main>
+        <div className="main-content">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/keywords" element={<KeywordPage />} />
-            <Route path="/youtube-metadata" element={<YoutubeMetadataUpdaterPage />} />
-            <Route path="/youtube-trends" element={<YoutubeTopTrendsPage />} />
+            <Route path="/keywords" element={<KeywordTrendAnalyzer />} />
+            <Route path="/youtube-metadata" element={<YoutubeMetadataUpdater />} />
+            <Route path="/youtube-trends" element={<YoutubeTopTrends />} />
+            <Route path="/" element={<h1>Welcome to the Dashboard</h1>} />
           </Routes>
-        </main>
+        </div>
       </div>
     </Router>
   );
-};
+}
 
 export default App;
