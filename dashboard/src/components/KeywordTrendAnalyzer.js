@@ -64,7 +64,7 @@ const KeywordTrendAnalyzer = () => {
   };
 
   const generateDescription = async (keyword, trendData, monthlyAverages) => {
-    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://your-deployed-url.com";
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website.vercel.app/";
     try {
       const response = await fetch(`${baseUrl}/api/generate-description`, {
         method: 'POST',
