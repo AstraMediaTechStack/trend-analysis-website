@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/generate-description', generateDescription);
-app.get('/keywords/trends', fetchTrends); // Ensure this route is defined
+app.get('/api/trends', fetchTrends); // Ensure this route is defined
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
