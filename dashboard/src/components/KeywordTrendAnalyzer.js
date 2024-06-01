@@ -49,7 +49,7 @@ const KeywordTrendAnalyzer = () => {
   };
 
   const fetchTrends = async (keyword) => {
-    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://your-deployed-url.com";
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/keywords/trends?keyword=${keyword}`);
       if (!response.ok) {
