@@ -23,7 +23,6 @@ module.exports = async (req, res) => {
       month,
       average: monthlyData[month].total / monthlyData[month].count
     }));
-    console.log("This is the data");
     console.log(dataOverTime);
     res.status(200).json({ interestOverTime: dataOverTime, monthlyAverages, interestByRegion: dataByRegion });
   } catch (error) {
