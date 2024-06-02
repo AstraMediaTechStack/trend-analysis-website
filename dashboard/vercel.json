@@ -8,5 +8,19 @@
         "distDir": "build"
       }
     }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/index.js"
+    },
+    {
+      "src": "/keywords",
+      "dest": "/build/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/build/index.html"
+    }
   ]
 }
