@@ -2,26 +2,20 @@
     "version": 2,
     "builds": [
       {
-        "src": "dashboard/package.json",
-        "use": "@vercel/static-build",
-        "config": { "distDir": "dashboard/build" }
-      },
-      {
-        "src": "backend/api/**/*.js",
+        "src": "api/**/*.js",
         "use": "@vercel/node"
       },
       {
-        "src": "backend/routes/**/*.js",
+        "src": "routes/**/*.js",
         "use": "@vercel/node"
       },
       {
-        "src": "backend/index.js",
+        "src": "index.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
-      { "src": "/api/(.*)", "dest": "/api/$1" },
-      { "src": "/(.*)", "dest": "/dashboard/$1" }
+      { "src": "/api/(.*)", "dest": "/api/$1" }
     ]
   }
   
