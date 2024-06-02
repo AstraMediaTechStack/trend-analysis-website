@@ -56,7 +56,7 @@ const KeywordTrendAnalyzer = () => {
         throw new Error(`Network response was not ok, status: ${response.status}`);
       }
       console.log(response);
-      const data = await response.json();
+      const data = await response;
 
       return { keyword, data };
     } catch (error) {
