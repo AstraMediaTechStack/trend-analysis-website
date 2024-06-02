@@ -49,7 +49,7 @@ const KeywordTrendAnalyzer = () => {
   };
 
   const fetchTrends = async (keyword) => {
-    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website.vercel.app";
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/api/keywords/trends?keyword=${keyword}`);
       if (!response.ok) {
@@ -67,7 +67,7 @@ const KeywordTrendAnalyzer = () => {
   };
 
   const generateDescription = async (keyword, trendData, monthlyAverages) => {
-    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website.vercel.app";
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/api/generate-description`, {
         method: 'POST',
