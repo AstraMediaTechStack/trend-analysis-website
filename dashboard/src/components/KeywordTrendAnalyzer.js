@@ -51,12 +51,12 @@ const KeywordTrendAnalyzer = () => {
   const fetchTrends = async (keyword) => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website.vercel.app";
     try {
-      const response = await fetch(`${baseUrl}/keywords/trends?keyword=${keyword}`);
+      const response = await fetch(`${baseUrl}/api/keywords/trends?keyword=${keyword}`);
       if (!response.ok) {
         throw new Error(`Network response was not ok, status: ${response.status}`);
       }
       console.log(response);
-      const data = await response;
+      const data = await response.json();
       console.log("DATA :");
       console.log(data);
       return { keyword, data };
