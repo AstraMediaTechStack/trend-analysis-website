@@ -6,7 +6,9 @@ const keywordRoutes = require('./routes/keywordRoutes');
 const app = express();
 // app.use(cors());
 app.use(cors({
-    origin: 'https://trend-analysis-website.vercel.app' // Allow your frontend domain
+    origin: 'https://trend-analysis-website.vercel.app', // Allow your frontend domain
+    methods: ['GET', 'POST'], // Allowed methods
+    allowedHeaders: ['Content-Type'] // Allowed headers
   }));
 app.use(express.json());
 
