@@ -57,7 +57,8 @@ const KeywordTrendAnalyzer = () => {
       }
       console.log(response);
       const data = await response;
-
+      console.log("DATA :");
+      console.log(data);
       return { keyword, data };
     } catch (error) {
       console.error('Error:', error);
