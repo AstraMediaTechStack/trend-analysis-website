@@ -4,7 +4,10 @@ const generateDescription = require('./api/generateDescription');
 const keywordRoutes = require('./routes/keywordRoutes');
 
 const app = express();
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: 'https://trend-analysis-website.vercel.app' // Allow your frontend domain
+  }));
 app.use(express.json());
 
 app.use('/api', keywordRoutes); // Use the router for /api endpoints
