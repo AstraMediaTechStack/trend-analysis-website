@@ -1,10 +1,7 @@
-// api/trends.js
 const googleTrends = require('google-trends-api');
 
 module.exports = async (req, res) => {
   const keyword = req.query.keyword;
-  console.log("Ahahah")
-  console.log(`Received request for keyword: ${keyword}`); // Logging incoming requests
   try {
     const interestOverTime = await googleTrends.interestOverTime({ keyword });
     const interestByRegion = await googleTrends.interestByRegion({ keyword });
