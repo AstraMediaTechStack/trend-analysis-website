@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 import * as XLSX from 'xlsx';
 import DatePicker from 'react-datepicker';
@@ -51,7 +51,7 @@ const KeywordTrendAnalyzer = () => {
     setDescriptions({});
   };
 
-  const fetchTrends = async (keyword) => {
+  const fetchTrends = useCallback(async (keyword) => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/api/keywords/trends?keyword=${keyword}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
@@ -64,9 +64,9 @@ const KeywordTrendAnalyzer = () => {
       console.error('Error:', error);
       return { keyword, data: null };
     }
-  };
+  }, [startDate, endDate]);
 
-  const generateDescription = async (keyword, trendData, monthlyAverages) => {
+  const generateDescription = useCallback(async (keyword, trendData, monthlyAverages) => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/api/generate-description`, {
@@ -87,7 +87,7 @@ const KeywordTrendAnalyzer = () => {
       console.error('Error generating description:', error);
       return 'Error generating description.';
     }
-  };
+  }, []);
 
   const exportToExcel = (data, filename) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -113,7 +113,7 @@ const KeywordTrendAnalyzer = () => {
     if (keywords.length > 0) {
       loadData();
     }
-  }, [keywords, startDate, endDate]);
+  }, [keywords, fetchTrends, generateDescription]);
 
   useEffect(() => {
     results.forEach(result => {
