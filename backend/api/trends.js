@@ -2,11 +2,15 @@ const googleTrends = require('google-trends-api');
 
 module.exports = async (req, res) => {
   const keyword = req.query.keyword;
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
   try {
-    const interestOverTime = await googleTrends.interestOverTime({ keyword });
+    const interestOverTime = await googleTrends.interestOverTime({ keyword, startTime: new Date(startDate), endTime: new Date(endDate) });
     const interestByRegion = await googleTrends.interestByRegion({ keyword });
+    const relatedQueries = await googleTrends.relatedQueries({ keyword });
     const dataOverTime = JSON.parse(interestOverTime);
     const dataByRegion = JSON.parse(interestByRegion);
+    const dataRelatedQueries = JSON.parse(relatedQueries);
 
     // Calculate monthly averages
     const monthlyData = {};
@@ -23,8 +27,8 @@ module.exports = async (req, res) => {
       month,
       average: monthlyData[month].total / monthlyData[month].count
     }));
-    console.log(dataOverTime);
-    res.status(200).json({ interestOverTime: dataOverTime, monthlyAverages, interestByRegion: dataByRegion });
+
+    res.status(200).json({ interestOverTime: dataOverTime, monthlyAverages, interestByRegion: dataByRegion, relatedQueries: dataRelatedQueries });
   } catch (error) {
     console.error(`Error fetching trends for keyword: ${keyword}`, error);
     res.status(500).send({ error: "Failed to fetch trends data" });

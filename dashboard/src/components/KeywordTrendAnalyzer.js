@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
 import * as XLSX from 'xlsx';
-// import Sidebar from './Sidebar'; // Import the Sidebar component
-import '../styles.css'; // Import the main CSS file
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import '../styles.css';
 Chart.register(...registerables);
 
 let trendLineCharts = {};
@@ -15,6 +16,8 @@ const KeywordTrendAnalyzer = () => {
   const [keywords, setKeywords] = useState([]);
   const [results, setResults] = useState([]);
   const [descriptions, setDescriptions] = useState({});
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -51,14 +54,11 @@ const KeywordTrendAnalyzer = () => {
   const fetchTrends = async (keyword) => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
-      const response = await fetch(`${baseUrl}/api/keywords/trends?keyword=${keyword}`);
+      const response = await fetch(`${baseUrl}/api/keywords/trends?keyword=${keyword}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
       if (!response.ok) {
         throw new Error(`Network response was not ok, status: ${response.status}`);
       }
-      console.log(response);
       const data = await response.json();
-      console.log("DATA :");
-      console.log(data);
       return { keyword, data };
     } catch (error) {
       console.error('Error:', error);
@@ -113,7 +113,7 @@ const KeywordTrendAnalyzer = () => {
     if (keywords.length > 0) {
       loadData();
     }
-  }, [keywords]);
+  }, [keywords, startDate, endDate]);
 
   useEffect(() => {
     results.forEach(result => {
@@ -238,6 +238,12 @@ const KeywordTrendAnalyzer = () => {
             accept=".txt" 
             onChange={handleFileUpload} 
           />
+          <div>
+            <label>Start Date:</label>
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+            <label>End Date:</label>
+            <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+          </div>
           <button onClick={handleSubmit}>Submit</button>
         </div>
         {results.map(result => (
@@ -328,6 +334,33 @@ const KeywordTrendAnalyzer = () => {
                 Region: item.geoName,
                 Value: item.value
               })), `${result.keyword}_interest_by_region.csv`)}>Export as CSV</button>
+            </div>
+            <div>
+              <h3>Related Queries</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Query</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.data && result.data.relatedQueries && result.data.relatedQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.query}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => exportToExcel(result.data.relatedQueries.default.rankedList[0].rankedKeyword.map(item => ({
+                Query: item.query,
+                Value: item.value
+              })), `${result.keyword}_related_queries.xlsx`)}>Export as XLSX</button>
+              <button onClick={() => exportToExcel(result.data.relatedQueries.default.rankedList[0].rankedKeyword.map(item => ({
+                Query: item.query,
+                Value: item.value
+              })), `${result.keyword}_related_queries.csv`)}>Export as CSV</button>
             </div>
             <div>
               <h3>Analysis</h3>
