@@ -1,7 +1,7 @@
 const express = require('express');
-const { getTopTrends } = require('../controllers/youtubeTrendsController');
 const router = express.Router();
+const youtubeTrendsController = require('../controllers/youtubeTrendsController');
 
-router.get('/trends', getTopTrends);
+router.get('/trending', youtubeTrendsController.getTrendingVideos);
 
 module.exports = router;
