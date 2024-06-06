@@ -9,7 +9,6 @@ module.exports.getTrendingVideos = async (req, res) => {
       regionCode: 'US', // Change this to the desired region
       maxResults: 10,
       key: process.env.GOOGLE_API_KEY
-
     });
 
     const videos = response.data.items.map(video => ({
@@ -19,7 +18,9 @@ module.exports.getTrendingVideos = async (req, res) => {
       likeCount: video.statistics.likeCount,
       commentCount: video.statistics.commentCount,
       uploadDate: video.snippet.publishedAt,
-      videoId: video.id
+      videoId: video.id,
+      description: video.snippet.description, // Add any additional fields you need
+      thumbnail: video.snippet.thumbnails.default.url
     }));
 
     res.status(200).json({ videos });

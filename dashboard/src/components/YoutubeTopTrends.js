@@ -48,6 +48,12 @@ const YoutubeTopTrends = () => {
         }]
       },
       options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'View Counts of Top 10 Trending Videos'
+          }
+        },
         scales: {
           y: {
             beginAtZero: true
@@ -91,6 +97,14 @@ const YoutubeTopTrends = () => {
           ],
           borderWidth: 1
         }]
+      },
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: 'Like Counts of Top 10 Trending Videos'
+          }
+        }
       }
     });
   };
@@ -126,6 +140,9 @@ const YoutubeTopTrends = () => {
                   <th>Likes</th>
                   <th>Comments</th>
                   <th>Upload Date</th>
+                  <th>Thumbnail</th> {/* New column for thumbnails */}
+                  <th>Description</th> {/* New column for description */}
+                  <th>Video Link</th> {/* New column for video link */}
                 </tr>
               </thead>
               <tbody>
@@ -137,10 +154,13 @@ const YoutubeTopTrends = () => {
                     <td>{video.likeCount}</td>
                     <td>{video.commentCount}</td>
                     <td>{new Date(video.uploadDate).toLocaleDateString()}</td>
+                    <td><img src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} alt={`${video.title} thumbnail`} /></td> {/* Display thumbnail */}
+                    <td>{video.description}</td> {/* Display description */}
+                    <td><a href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">Watch Video</a></td> {/* Display video link */}
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="6">Loading...</td>
+                    <td colSpan="9">Loading...</td> {/* Adjust colspan for the new columns */}
                   </tr>
                 )}
               </tbody>
