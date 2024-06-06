@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 import * as XLSX from 'xlsx';
 import '../styles.css';
@@ -7,11 +7,7 @@ Chart.register(...registerables);
 const YoutubeTopTrends = () => {
   const [videos, setVideos] = useState([]);
 
-  useEffect(() => {
-    fetchTrendingVideos();
-  }, []);
-
-  const fetchTrendingVideos = async () => {
+  const fetchTrendingVideos = useCallback(async () => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
     try {
       const response = await fetch(`${baseUrl}/api/youtube/trending`);
@@ -26,7 +22,11 @@ const YoutubeTopTrends = () => {
     } catch (error) {
       console.error('Error fetching trending videos:', error);
     }
-  };
+  }, []); // Add an empty dependency array since the function doesn't rely on any props or state
+
+  useEffect(() => {
+    fetchTrendingVideos();
+  }, [fetchTrendingVideos]);
 
   const createCharts = (videos) => {
     const labels = videos.map(video => video.title);
