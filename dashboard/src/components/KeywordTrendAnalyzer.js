@@ -309,33 +309,6 @@ const KeywordTrendAnalyzer = () => {
               <button onClick={() => exportToExcel(result.data.monthlyAverages, `${result.keyword}_average_monthly_trend.csv`)}>Export as CSV</button>
             </div>
             <div>
-              <h3>Interest by Region</h3>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Region</th>
-                    <th>Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.data && result.data.interestByRegion && result.data.interestByRegion.default.geoMapData.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.geoName}</td>
-                      <td>{item.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <button onClick={() => exportToExcel(result.data.interestByRegion.default.geoMapData.map(item => ({
-                Region: item.geoName,
-                Value: item.value
-              })), `${result.keyword}_interest_by_region.xlsx`)}>Export as XLSX</button>
-              <button onClick={() => exportToExcel(result.data.interestByRegion.default.geoMapData.map(item => ({
-                Region: item.geoName,
-                Value: item.value
-              })), `${result.keyword}_interest_by_region.csv`)}>Export as CSV</button>
-            </div>
-            <div>
               <h3>Related Queries</h3>
               <table>
                 <thead>
@@ -362,6 +335,61 @@ const KeywordTrendAnalyzer = () => {
                 Value: item.value
               })), `${result.keyword}_related_queries.csv`)}>Export as CSV</button>
             </div>
+            <div>
+              <h3>Rising Queries</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Query</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.data && result.data.risingQueries && result.data.risingQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.query}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => exportToExcel(result.data.risingQueries.default.rankedList[0].rankedKeyword.map(item => ({
+                Query: item.query,
+                Value: item.value
+              })), `${result.keyword}_rising_queries.xlsx`)}>Export as XLSX</button>
+              <button onClick={() => exportToExcel(result.data.risingQueries.default.rankedList[0].rankedKeyword.map(item => ({
+                Query: item.query,
+                Value: item.value
+              })), `${result.keyword}_rising_queries.csv`)}>Export as CSV</button>
+            </div>
+            <div>
+              <h3>Interest by Region</h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Region</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.data && result.data.interestByRegion && result.data.interestByRegion.default.geoMapData.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.geoName}</td>
+                      <td>{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button onClick={() => exportToExcel(result.data.interestByRegion.default.geoMapData.map(item => ({
+                Region: item.geoName,
+                Value: item.value
+              })), `${result.keyword}_interest_by_region.xlsx`)}>Export as XLSX</button>
+              <button onClick={() => exportToExcel(result.data.interestByRegion.default.geoMapData.map(item => ({
+                Region: item.geoName,
+                Value: item.value
+              })), `${result.keyword}_interest_by_region.csv`)}>Export as CSV</button>
+            </div>
+            
             <div>
               <h3>Analysis</h3>
               <p>{descriptions[result.keyword] || 'Generating description...'}</p>
