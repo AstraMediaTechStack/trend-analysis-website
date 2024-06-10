@@ -136,13 +136,24 @@ const YoutubeTopTrends = () => {
                 <tr>
                   <th>Title</th>
                   <th>Channel</th>
+                  <th>Channel URL</th>
+                  <th>Subscribers</th>
                   <th>Views</th>
                   <th>Likes</th>
                   <th>Comments</th>
                   <th>Upload Date</th>
-                  <th>Thumbnail</th> {/* New column for thumbnails */}
-                  <th>Description</th> {/* New column for description */}
-                  <th>Video Link</th> {/* New column for video link */}
+                  <th>Thumbnail</th>
+                  <th>Description</th>
+                  <th>Tags</th>
+                  <th>Category</th>
+                  <th>Duration</th>
+                  <th>Title Capitalized Words</th>
+                  <th>Title Upper Case Count</th>
+                  <th>Title Emoji Count</th>
+                  <th>Title Character Count</th>
+                  <th>Dominant Colors</th>
+                  <th>Mood</th>
+                  <th>Video Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,17 +161,28 @@ const YoutubeTopTrends = () => {
                   <tr key={index}>
                     <td>{video.title}</td>
                     <td>{video.channel}</td>
+                    <td><a href={video.channelUrl} target="_blank" rel="noopener noreferrer">{video.channelUrl}</a></td>
+                    <td>{video.subscriberCount}</td>
                     <td>{video.viewCount}</td>
                     <td>{video.likeCount}</td>
                     <td>{video.commentCount}</td>
                     <td>{new Date(video.uploadDate).toLocaleDateString()}</td>
-                    <td><img src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} alt={`${video.title} thumbnail`} /></td> {/* Display thumbnail */}
-                    <td>{video.description}</td> {/* Display description */}
-                    <td><a href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">Watch Video</a></td> {/* Display video link */}
+                    <td><img src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} alt={`${video.title} thumbnail`} /></td>
+                    <td>{video.description}</td>
+                    <td>{video.tags ? video.tags.join(', ') : 'N/A'}</td>
+                    <td>{video.category}</td>
+                    <td>{video.duration}</td>
+                    <td>{video.titleCapitalizedWords}</td>
+                    <td>{video.titleUpperCaseCount}</td>
+                    <td>{video.titleEmojiCount}</td>
+                    <td>{video.titleCharacterCount}</td>
+                    <td>{video.thumbnailAnalysis.dominantColors.join(', ')}</td>
+                    <td>{video.mood}</td>
+                    <td><a href={`https://www.youtube.com/watch?v=${video.videoId}`} target="_blank" rel="noopener noreferrer">Watch Video</a></td>
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="9">Loading...</td> {/* Adjust colspan for the new columns */}
+                    <td colSpan="20">Loading...</td>
                   </tr>
                 )}
               </tbody>

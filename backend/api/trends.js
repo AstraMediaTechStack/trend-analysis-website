@@ -4,12 +4,15 @@ module.exports = async (req, res) => {
   const keyword = req.query.keyword;
   const startDate = req.query.startDate;
   const endDate = req.query.endDate;
-  try {
+  try { 
+    
     const interestOverTime = await googleTrends.interestOverTime({ keyword, startTime: new Date(startDate), endTime: new Date(endDate) });
-    const interestByRegion = await googleTrends.interestByRegion({ keyword });
-    const relatedQueries = await googleTrends.relatedQueries({ keyword, resolution: 'TOP' });
-    const risingQueries = await googleTrends.relatedQueries({ keyword, resolution: 'RISING' });
 
+    const interestByRegion = await googleTrends.interestByRegion({ keyword });
+
+    const relatedQueries = await googleTrends.relatedQueries({ keyword, resolution: 'TOP' });
+
+    const risingQueries = await googleTrends.relatedQueries({ keyword, resolution: 'RISING' });
     const dataOverTime = JSON.parse(interestOverTime);
     const dataByRegion = JSON.parse(interestByRegion);
     const dataRelatedQueries = JSON.parse(relatedQueries);
