@@ -1,8 +1,8 @@
 const { google } = require('googleapis');
 const youtube = google.youtube('v3');
 const axios = require('axios');
+const sharp = require('sharp');
 const getColors = require('get-image-colors');
-const Vibrant = require('node-vibrant');
 
 // Helper function to calculate character count
 const getCharacterCount = (str) => {
@@ -60,6 +60,25 @@ const getDominantColors = async (imageUrl) => {
   }
 };
 
+const performEdgeDetection = async (imageUrl) => {
+  try {
+    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const imageBuffer = Buffer.from(response.data, 'binary');
+    const edgeDetectedImageBuffer = await sharp(imageBuffer)
+      .greyscale()
+      .convolve({
+        width: 3,
+        height: 3,
+        kernel: [-1, -1, -1, -1, 8, -1, -1, -1, -1]
+      })
+      .toBuffer();
+    return edgeDetectedImageBuffer;
+  } catch (error) {
+    console.error('Error performing edge detection:', error);
+    return null;
+  }
+};
+
 module.exports.getTrendingVideos = async (req, res) => {
   try {
     const response = await youtube.videos.list({
@@ -112,7 +131,22 @@ module.exports.getTrendingVideos = async (req, res) => {
   }
 };
 
-// Function to get category name from category ID
+module.exports.analyzeThumbnail = async (req, res) => {
+  const { imageUrl } = req.body;
+  try {
+    const edgeDetectedImageBuffer = await performEdgeDetection(imageUrl);
+    if (edgeDetectedImageBuffer) {
+      res.set('Content-Type', 'image/jpeg');
+      res.send(edgeDetectedImageBuffer);
+    } else {
+      res.status(500).send({ error: 'Failed to perform edge detection' });
+    }
+  } catch (error) {
+    console.error('Error performing edge detection:', error);
+    res.status(500).send({ error: 'Error performing edge detection' });
+  }
+};
+
 const getCategory = (categoryId) => {
   const categories = {
     '1': 'Film & Animation',

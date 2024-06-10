@@ -6,6 +6,8 @@ Chart.register(...registerables);
 
 const YoutubeTopTrends = () => {
   const [videos, setVideos] = useState([]);
+  const [selectedThumbnail, setSelectedThumbnail] = useState('');
+  const [edgeDetectedImage, setEdgeDetectedImage] = useState(null);
 
   const fetchTrendingVideos = useCallback(async () => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
@@ -22,7 +24,7 @@ const YoutubeTopTrends = () => {
     } catch (error) {
       console.error('Error fetching trending videos:', error);
     }
-  }, []); // Add an empty dependency array since the function doesn't rely on any props or state
+  }, []);
 
   useEffect(() => {
     fetchTrendingVideos();
@@ -116,6 +118,31 @@ const YoutubeTopTrends = () => {
     XLSX.writeFile(workbook, filename);
   };
 
+  const handleThumbnailSelect = (event) => {
+    setSelectedThumbnail(event.target.value);
+  };
+
+  const analyzeThumbnail = async () => {
+    const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
+    try {
+      const response = await fetch(`${baseUrl}/api/youtube/analyze-thumbnail`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ imageUrl: selectedThumbnail })
+      });
+      if (!response.ok) {
+        throw new Error(`Network response was not ok, status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setEdgeDetectedImage(imageUrl);
+    } catch (error) {
+      console.error('Error performing edge detection:', error);
+    }
+  };
+
   return (
     <div className="container">
       <div className="main-content">
@@ -167,7 +194,14 @@ const YoutubeTopTrends = () => {
                     <td>{video.likeCount}</td>
                     <td>{video.commentCount}</td>
                     <td>{new Date(video.uploadDate).toLocaleDateString()}</td>
-                    <td><img src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} alt={`${video.title} thumbnail`} /></td>
+                    <td>
+                      <img 
+                        src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} 
+                        alt={`${video.title} thumbnail`} 
+                        onClick={() => setSelectedThumbnail(video.thumbnail)} 
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </td>
                     <td>{video.description}</td>
                     <td>{video.tags ? video.tags.join(', ') : 'N/A'}</td>
                     <td>{video.category}</td>
@@ -190,6 +224,25 @@ const YoutubeTopTrends = () => {
             <button onClick={() => exportToExcel(videos, 'trending_videos.xlsx')}>Export as XLSX</button>
             <button onClick={() => exportToExcel(videos, 'trending_videos.csv')}>Export as CSV</button>
           </div>
+        </div>
+
+        <div className="card">
+          <h2>Analyze Selected Thumbnail</h2>
+          <div>
+            <select onChange={handleThumbnailSelect} value={selectedThumbnail}>
+              <option value="">Select a thumbnail</option>
+              {videos.map((video, index) => (
+                <option key={index} value={video.thumbnail}>{video.title}</option>
+              ))}
+            </select>
+            <button onClick={analyzeThumbnail} disabled={!selectedThumbnail}>Analyze Selected Image</button>
+          </div>
+          {edgeDetectedImage && (
+            <div>
+              <h3>Edge Detection Result</h3>
+              <img src={edgeDetectedImage} alt="Edge Detection Result" />
+            </div>
+          )}
         </div>
       </div>
     </div>
