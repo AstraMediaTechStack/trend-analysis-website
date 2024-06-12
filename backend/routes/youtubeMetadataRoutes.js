@@ -1,8 +1,7 @@
 const express = require('express');
-const { uploadMetadata, updateMetadata } = require('../controllers/youtubeMetadataController');
+const youtubeMetadataController = require('../controllers/youtubeMetadataController');
 const router = express.Router();
 
-router.post('/upload', uploadMetadata);
-router.post('/update', updateMetadata);
+router.post('/update-metadata', youtubeMetadataController.updateVideoMetadata);
 
 module.exports = router;
