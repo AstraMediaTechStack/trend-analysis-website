@@ -1,5 +1,5 @@
 require('dotenv').config();
-const OpenAI = require('openai');
+const { OpenAI } = require("openai");
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -20,23 +20,33 @@ const generateDescription = async (prompt) => {
 
   while (retries < maxRetries) {
     try {
-      const response = await openai.completions.create({
-        model: 'gpt-3.5-turbo-instruct', // Use the recommended replacement model
-        prompt: prompt,
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that provides detailed trend analyses.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
         max_tokens: 300,
+        temperature: 0.7,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
       });
-
-      const { choices } = response;
-      if (choices && choices.length > 0) {
-        return choices[0].text.trim();
+      
+      console.log(response.choices[0].message.content);
+      if (response && response.choices && response.choices.length > 0) {
+        return response.choices[0].message.content.trim();
       } else {
         throw new Error('No text generated');
       }
     } catch (error) {
-      if (error.code === 'insufficient_quota') {
-        console.error('Quota exceeded. Please check your plan and billing details.');
-        throw error;
-      } else if (error.status === 429 && retries < maxRetries) {
+      if (error.response && error.response.status === 429 && retries < maxRetries) {
         console.error(`Rate limit exceeded. Retrying in ${2 ** retries} seconds...`);
         await delay(2 ** retries * 1000); // Exponential backoff
         retries += 1;
@@ -46,6 +56,7 @@ const generateDescription = async (prompt) => {
       }
     }
   }
+  throw new Error('Failed to generate description after maximum retries');
 };
 
 module.exports = async (req, res) => {
@@ -54,8 +65,8 @@ module.exports = async (req, res) => {
   const prompt = `
   The following is a trend analysis for the keyword "${keyword}".
   Trend Data (Jan 1 of each year):
-  ${trendData.map(item => `Year: ${item.formattedAxisTime}, Value: ${item.value[0]}`).join(' ')}
-  Please provide a detailed analysis and description of the trends observed for this keyword. Explain any noticeable patterns, peaks, or declines in interest over time.
+  ${trendData.map(item => `Year: ${item.formattedAxisTime}, Value: ${item.value[0]}`).join('\n')}
+  Please provide a short analysis and description of the trends observed for this keyword. Explain any noticeable patterns and also give reasons why each change is occuring based on the keyword.
   `;
 
   try {
