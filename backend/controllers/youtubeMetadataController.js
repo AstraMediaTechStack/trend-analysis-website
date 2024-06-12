@@ -1,13 +1,7 @@
 const { google } = require('googleapis');
-const fs = require('fs');
-const path = require('path');
-
-const TOKEN_PATH = path.join(process.cwd(), 'tokens.json');
-let tokens;
-
-if (fs.existsSync(TOKEN_PATH)) {
-  tokens = JSON.parse(fs.readFileSync(TOKEN_PATH));
-}
+const express = require('express');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID, 
@@ -15,9 +9,8 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URI 
 );
 
-if (tokens) {
-  oauth2Client.setCredentials(tokens);
-}
+const tokens = JSON.parse(process.env.TOKENS);
+oauth2Client.setCredentials(tokens);
 
 const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 
