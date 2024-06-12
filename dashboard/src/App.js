@@ -4,6 +4,7 @@ import KeywordTrendAnalyzer from './components/KeywordTrendAnalyzer';
 import YoutubeMetadataUpdater from './components/YoutubeMetadataUpdater';
 import YoutubeTopTrendsPage from './pages/YoutubeTopTrendsPage';
 import Sidebar from './components/Sidebar';
+import HomePage from './pages/HomePage';
 
 import './styles.css';
 
@@ -15,7 +16,7 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/keywords" element={<KeywordTrendAnalyzer />} />
-            <Route path="/" element={<h1>Welcome to the Dashboard</h1>} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/youtube-trends" element={<YoutubeTopTrendsPage />} />
             <Route path="/youtube-metadata" element={<YoutubeMetadataUpdater />} />
           </Routes>

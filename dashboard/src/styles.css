@@ -2,110 +2,147 @@
 
 /* Define color scheme */
 :root {
-    --light-gray: #f0f0f0;
-    --light-blue: #d0e7ff;
-    --dark-blue: #1a73e8;
-    --text-color: #333;
-  }
-  
-  /* Global Styles */
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: var(--light-gray);
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    display: flex;
-    height: 100vh; /* Ensure the container takes the full height of the viewport */
-  }
-  
-  /* Sidebar */
-  aside {
-    background-color: var(--light-blue);
-    width: 250px;
-    min-height: 100vh;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  aside ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  aside ul li {
-    margin: 20px 0;
-  }
-  
-  aside ul li a {
-    color: var(--dark-blue);
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  aside ul li a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Main Content Area */
-  .main-content {
-    flex-grow: 1;
-    padding: 40px;
-    background-color: var(--light-gray);
-    overflow-y: auto; /* Ensure content can scroll if it overflows the viewport */
-  }
-  
-  /* Card Styles */
-  .card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .card h2 {
-    color: var(--dark-blue);
-  }
-  
-  .card canvas {
-    max-width: 100%;
-  }
-  
-  /* Table Styles */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  table, th, td {
-    border: 1px solid var(--light-blue);
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: left;
-  }
-  
-  th {
-    background-color: var(--light-blue);
-  }
-  
-  button {
-    background-color: var(--dark-blue);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: var(--light-blue);
-    color: var(--dark-blue);
-  }
-  
+  --light-gray: #f0f0f0;
+  --light-blue: #d0e7ff;
+  --dark-blue: #1a73e8;
+  --text-color: #333;
+  --white: #fff;
+  --primary: #007bff;
+  --success: #28a745;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --info: #17a2b8;
+  --sidebar-bg: linear-gradient(to bottom, #000000, #434343);
+}
+
+/* Global Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--light-gray);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  height: 100vh; /* Ensure the container takes the full height of the viewport */
+}
+
+/* Sidebar */
+.sidenav {
+  background: var(--sidebar-bg);
+  width: 250px;
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--white);
+  border-radius: 15px;
+}
+
+.sidenav-header {
+  margin-bottom: 30px;
+}
+
+.sidenav h2 {
+  color: var(--white);
+}
+
+.navbar-nav {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 20px 0;
+}
+
+.nav-link {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  background-color: var(--light-blue);
+}
+
+.nav-section-title {
+  font-size: 14px;
+  color: var(--light-blue);
+}
+
+/* Main Content Area */
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: var(--light-gray);
+  overflow-y: auto; /* Ensure content can scroll if it overflows the viewport */
+}
+
+.card {
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card1 {
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 45%;
+  height: 40%;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  color: var(--dark-blue);
+}
+
+.stats-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background-color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-card .icon {
+  font-size: 30px;
+}
+
+button {
+  background-color: var(--dark-blue);
+  color: var(--white);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--light-blue);
+  color: var(--dark-blue);
+}
+
+/* Chart Container */
+.chart-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+}

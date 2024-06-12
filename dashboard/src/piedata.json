@@ -1,0 +1,104 @@
+{
+  "relatedQueries": [
+    {
+      "query": "computer science engineering",
+      "value": 100
+    },
+    {
+      "query": "computer engineering",
+      "value": 100
+    },
+    {
+      "query": "engineering",
+      "value": 99
+    },
+    {
+      "query": "what is computer science",
+      "value": 71
+    },
+    {
+      "query": "what is computer",
+      "value": 67
+    },
+    {
+      "query": "computer science degree",
+      "value": 61
+    },
+    {
+      "query": "computer science jobs",
+      "value": 60
+    },
+    {
+      "query": "computer science course",
+      "value": 41
+    },
+    {
+      "query": "computer science courses",
+      "value": 38
+    },
+    {
+      "query": "computer science salary",
+      "value": 37
+    },
+    {
+      "query": "computer science syllabus",
+      "value": 37
+    },
+    {
+      "query": "computer science masters",
+      "value": 34
+    },
+    {
+      "query": "data science",
+      "value": 34
+    },
+    {
+      "query": "computer science and engineering",
+      "value": 32
+    },
+    {
+      "query": "bsc computer science",
+      "value": 31
+    },
+    {
+      "query": "jobs in computer science",
+      "value": 29
+    },
+    {
+      "query": "computer science ranking",
+      "value": 27
+    },
+    {
+      "query": "computer science colleges",
+      "value": 27
+    },
+    {
+      "query": "computer science major",
+      "value": 26
+    },
+    {
+      "query": "computer programming",
+      "value": 22
+    },
+    {
+      "query": "phd computer science",
+      "value": 20
+    },
+    {
+      "query": "masters in computer science",
+      "value": 20
+    },
+    {
+      "query": "ap computer science",
+      "value": 19
+    },
+    {
+      "query": "msc computer science",
+      "value": 16
+    },
+    {
+      "query": "ms in computer science",
+      "value": 15
+    }
+  ]
+}
