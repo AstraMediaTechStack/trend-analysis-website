@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Pie, Line } from 'react-chartjs-2';
 import piedata from '../piedata.json';
 import linedata from '../linedata.json';
+import '../styles.css';
 
 const HomePage = () => {
   const [pieData, setPieData] = useState(null);
@@ -44,7 +45,10 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Welcome to the Dashboard</h1>
+      <div className='margdiv'>
+        <h1>Welcome to the Dashboard</h1>
+            </div>
+      
       <div className="card">
         <h2>General Statistics</h2>
         <div className="stats-grid">
@@ -79,15 +83,23 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className="chart-container">
-        <div className="card1">
-          <h2>Interest Over Time</h2>
-          {lineData && <Line data={lineData} />}
+      <div className="chart-container1">
+        <div className="mini-container">
+          <div className="card1m">
+            <h2>Computer Science Trend Over Time</h2>
+            {lineData && <Line data={lineData} />}
+          </div>
+          <div className="card1m">
+            <h2>Computer Science Trend Over Time</h2>
+            {lineData && <Line data={lineData} />}
+          </div>
         </div>
-
-        <div className="card1">
-          <h2>Related Queries</h2>
-          {pieData && <Pie data={pieData} />}
+      
+        <div className="mini-container">
+          <div className="card1m">
+            <h2>Computer Science Related Queries</h2>
+            {pieData && <Pie data={pieData} />}
+          </div>
         </div>
       </div>
     </div>

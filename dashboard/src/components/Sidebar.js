@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../logo.svg'; // Update this path to the actual path of your logo file
 
 const Sidebar = () => {
   return (
     <aside className="sidenav">
-      <div className="sidenav-header">
-        <h2>Dashboard</h2>
+      <div className="navbar-header">
+        <img src={logo} alt="Astra Media Logo" className="logo" />
+        <div className="logo-cont">
+
+        
+        <div className="motto">Create. Connect. Captivate.</div>
+        </div>
+        
       </div>
       <ul className="navbar-nav">
         <li className="nav-item">

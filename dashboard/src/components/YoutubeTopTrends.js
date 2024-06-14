@@ -2,12 +2,59 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 import * as XLSX from 'xlsx';
 import '../styles.css';
+import axios from 'axios'; // Use axios for API calls
+
 Chart.register(...registerables);
+
+const OPENAI_API_KEY ='sk-proj-trPBPFwY0aHrX617jmC5T3BlbkFJEL0hbb742mIVMAkyoFU2';
+
+const generateResponse = async (prompt) => {
+  try {
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a helpful assistant that provides detailed analyses.",
+          },
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+        max_tokens: 300,
+        temperature: 0.7,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.data && response.data.choices && response.data.choices.length > 0) {
+      return response.data.choices[0].message.content.trim();
+    } else {
+      throw new Error('No text generated');
+    }
+  } catch (error) {
+    console.error('Error in generateResponse:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
 
 const YoutubeTopTrends = () => {
   const [videos, setVideos] = useState([]);
   const [selectedThumbnail, setSelectedThumbnail] = useState('');
   const [edgeDetectedImage, setEdgeDetectedImage] = useState(null);
+  const [question, setQuestion] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
 
   const fetchTrendingVideos = useCallback(async () => {
     const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
@@ -31,7 +78,7 @@ const YoutubeTopTrends = () => {
   }, [fetchTrendingVideos]);
 
   const createCharts = (videos) => {
-    const labels = videos.map(video => video.title);
+    const labels = videos.map((video, index) => `Video ${index + 1}`);
     const viewCounts = videos.map(video => video.viewCount);
     const likeCounts = videos.map(video => video.likeCount);
 
@@ -143,24 +190,52 @@ const YoutubeTopTrends = () => {
     }
   };
 
+  const handleQuestionSubmit = async () => {
+    const videoTitles = videos.map(video => video.title).join(', ');
+    const channelNames = videos.map(video => video.channel).join(', ');
+    const videoViews = videos.map(video => video.viewCount).join(', ');
+    const videoLikes = videos.map(video => video.likeCount).join(', ');
+
+    const prompt = `
+      You have access to the following trending YouTube video data:
+      Titles: ${videoTitles}
+      Channels: ${channelNames}
+      View Counts: ${videoViews}
+      Like Counts: ${videoLikes}
+      Answer the following question based on this data:
+      ${question}
+    `;
+
+    try {
+      const response = await generateResponse(prompt);
+      setAiResponse(response);
+    } catch (error) {
+      console.error('Error generating response:', error);
+      setAiResponse('Failed to generate response.');
+    }
+  };
+
   return (
     <div className="container">
       <div className="main-content">
         <div className="card">
-          <h2>Top 10 Trending YouTube Videos</h2>
-          <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
-            <div style={{ width: '100%', marginBottom: '20px' }}>
+          <h2 className="card-title">Top 10 Trending YouTube Videos</h2>
+          <div className="charts-container">
+            <div className="chart-wrapper">
               <canvas id="viewCountChart"></canvas>
             </div>
-            <div style={{ width: '100%', marginBottom: '20px' }}>
+            <div className="chart-wrapper">
               <canvas id="likeCountChart"></canvas>
             </div>
           </div>
-          <div>
-            <h3>Trending Videos Data</h3>
+        </div>
+        <div className="card">
+          <h2 className="card-title">Trending Videos Data</h2>
+          <div className="table-wrapper">
             <table>
               <thead>
                 <tr>
+                  <th>Id</th>
                   <th>Title</th>
                   <th>Channel</th>
                   <th>Channel URL</th>
@@ -186,6 +261,7 @@ const YoutubeTopTrends = () => {
               <tbody>
                 {videos.length > 0 ? videos.map((video, index) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{video.title}</td>
                     <td>{video.channel}</td>
                     <td><a href={video.channelUrl} target="_blank" rel="noopener noreferrer">{video.channelUrl}</a></td>
@@ -195,10 +271,10 @@ const YoutubeTopTrends = () => {
                     <td>{video.commentCount}</td>
                     <td>{new Date(video.uploadDate).toLocaleDateString()}</td>
                     <td>
-                      <img 
-                        src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`} 
-                        alt={`${video.title} thumbnail`} 
-                        onClick={() => setSelectedThumbnail(video.thumbnail)} 
+                      <img
+                        src={`https://img.youtube.com/vi/${video.videoId}/default.jpg`}
+                        alt={`${video.title} thumbnail`}
+                        onClick={() => setSelectedThumbnail(video.thumbnail)}
                         style={{ cursor: 'pointer' }}
                       />
                     </td>
@@ -216,18 +292,20 @@ const YoutubeTopTrends = () => {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="20">Loading...</td>
+                    <td colSpan="21">Loading...</td>
                   </tr>
                 )}
               </tbody>
             </table>
+          </div>
+          <div>
             <button onClick={() => exportToExcel(videos, 'trending_videos.xlsx')}>Export as XLSX</button>
             <button onClick={() => exportToExcel(videos, 'trending_videos.csv')}>Export as CSV</button>
           </div>
         </div>
 
         <div className="card">
-          <h2>Analyze Selected Thumbnail</h2>
+          <h2 className="card-title">Analyze Selected Thumbnail</h2>
           <div>
             <select onChange={handleThumbnailSelect} value={selectedThumbnail}>
               <option value="">Select a thumbnail</option>
@@ -241,6 +319,26 @@ const YoutubeTopTrends = () => {
             <div>
               <h3>Edge Detection Result</h3>
               <img src={edgeDetectedImage} alt="Edge Detection Result" />
+            </div>
+          )}
+        </div>
+
+        <div className="card">
+          <h2 className="card-title">Ask AI about Trending Videos</h2>
+          <div>
+            <input
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Type your question here"
+              className="text-input"
+            />
+            <button onClick={handleQuestionSubmit} disabled={!question}>Submit</button>
+          </div>
+          {aiResponse && (
+            <div>
+              <h3>AI Response</h3>
+              <p>{aiResponse}</p>
             </div>
           )}
         </div>
