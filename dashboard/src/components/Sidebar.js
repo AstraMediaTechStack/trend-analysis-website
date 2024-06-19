@@ -34,10 +34,10 @@ const Sidebar = () => {
           <Link to="/profile" className="nav-link">Profile</Link>
         </li>
         <li className="nav-item">
-          <Link to="/sign-in" className="nav-link">Sign In</Link>
+          <Link to="/login" className="nav-link">Sign In</Link>
         </li>
         <li className="nav-item">
-          <Link to="/sign-up" className="nav-link">Sign Up</Link>
+          <Link to="/register" className="nav-link">Sign Up</Link>
         </li>
       </ul>
     </aside>

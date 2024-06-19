@@ -14,6 +14,8 @@ const oauth2Client = new google.auth.OAuth2(
 const SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl'];
 
 app.get('/auth', (req, res) => {
+  const sleep = ms => new Promise(r => setTimeout(r, 2000));
+  sleep(2000);
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,

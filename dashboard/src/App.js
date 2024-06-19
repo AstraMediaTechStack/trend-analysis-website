@@ -6,6 +6,7 @@ import YoutubeTopTrendsPage from './pages/YoutubeTopTrendsPage';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 
+
 import './styles.css';
 
 function App() {
@@ -19,6 +20,8 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/youtube-trends" element={<YoutubeTopTrendsPage />} />
             <Route path="/youtube-metadata" element={<YoutubeMetadataUpdater />} />
+            <Route path="/authenticated" component={YoutubeMetadataUpdater} />
+
           </Routes>
         </div>
       </div>

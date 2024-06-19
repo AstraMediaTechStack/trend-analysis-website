@@ -1,21 +1,41 @@
 const { google } = require('googleapis');
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const oauth2Client = new google.auth.OAuth2(
-  process.env.CLIENT_ID, 
-  process.env.CLIENT_SECRET, 
-  process.env.REDIRECT_URI 
-);
+const TOKEN_PATH = path.join(__dirname, '../tokens.json');
 
-const tokens = JSON.parse(process.env.TOKENS);
-oauth2Client.setCredentials(tokens);
+const oauth2Client = new google.auth.OAuth2(
+  process.env.CLIENT_ID,
+  process.env.CLIENT_SECRET,
+  process.env.REDIRECT_URI
+);
 
 const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 
 const updateVideoMetadata = async (req, res) => {
-  const updates = req.body; // Array of video updates
+  const username = req.body.username;
+  if (!username) {
+    return res.status(400).send('Username is required');
+  }
+
+  // Read tokens from tokens.json
+  let tokens;
+  if (fs.existsSync(TOKEN_PATH)) {
+    const tokenData = JSON.parse(fs.readFileSync(TOKEN_PATH));
+    tokens = tokenData[username];
+    if (tokens) {
+      oauth2Client.setCredentials(tokens);
+    } else {
+      return res.status(401).send('Not authenticated');
+    }
+  } else {
+    return res.status(401).send('Not authenticated');
+  }
+
+  const updates = req.body.updates; // Array of video updates
   const results = [];
 
   for (const update of updates) {

@@ -4,14 +4,40 @@ import * as XLSX from 'xlsx';
 const YoutubeMetadataUpdater = () => {
   const [file, setFile] = useState(null);
   const [updateResults, setUpdateResults] = useState([]);
+  const [username, setUsername] = useState('');
+  const [authUrl, setAuthUrl] = useState('');
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
+  const handleAuth = async () => {
+    if (!username) {
+      console.error('Username is required.');
+      return;
+    }
+
+    const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://trend-analysis-website-server.vercel.app';
+    
+    try {
+      const response = await fetch(`${baseUrl}/api/auth/auth?username=${username}`);
+      const data = await response.json();
+      setAuthUrl(data.authUrl);
+      // Open the authentication URL in a new tab or popup
+      window.open(data.authUrl, '_blank', 'width=500,height=600');
+    } catch (error) {
+      console.error('Error initiating authentication:', error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!file) {
       console.error('No file selected.');
+      return;
+    }
+
+    if (!username) {
+      console.error('Username is required.');
       return;
     }
 
@@ -22,7 +48,7 @@ const YoutubeMetadataUpdater = () => {
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
-      const baseUrl = window.location.hostname === "localhost" ? "http://localhost:5000" : "https://trend-analysis-website-server.vercel.app";
+      const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://trend-analysis-website-server.vercel.app';
       
       try {
         const response = await fetch(`${baseUrl}/api/youtube/update-metadata`, {
@@ -30,8 +56,14 @@ const YoutubeMetadataUpdater = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(jsonData),
+          body: JSON.stringify({ username, updates: jsonData }),
         });
+
+        if (response.status === 401) {
+          // Prompt for authentication
+          handleAuth();
+          return;
+        }
 
         const result = await response.json();
         setUpdateResults(result.updateResults);
@@ -47,7 +79,19 @@ const YoutubeMetadataUpdater = () => {
       <div className="card">
         <h2>YouTube Metadata Updater</h2>
         <input type="file" accept=".csv" onChange={handleFileChange} />
+        <input
+          type="text"
+          placeholder="Enter your username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <button onClick={handleSubmit}>Update Metadata</button>
+        {authUrl && (
+          <div>
+            <h3>Authentication Required</h3>
+            <p>Please complete the authentication process in the popup window.</p>
+          </div>
+        )}
         <div>
           <h3>Update Results</h3>
           <table>
