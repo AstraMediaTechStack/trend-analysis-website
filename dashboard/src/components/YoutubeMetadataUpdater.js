@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
+import { useLocation } from 'react-router-dom';
 
 const YoutubeMetadataUpdater = () => {
   const [file, setFile] = useState(null);
   const [updateResults, setUpdateResults] = useState([]);
   const [username, setUsername] = useState('');
   const [authUrl, setAuthUrl] = useState('');
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const usernameParam = params.get('username');
+    if (usernameParam) {
+      setUsername(usernameParam);
+    }
+  }, [location]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -18,13 +29,23 @@ const YoutubeMetadataUpdater = () => {
     }
 
     const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://trend-analysis-website-server.vercel.app';
-    
+
     try {
       const response = await fetch(`${baseUrl}/api/auth/auth?username=${username}`);
       const data = await response.json();
       setAuthUrl(data.authUrl);
-      // Open the authentication URL in a new tab or popup
-      window.open(data.authUrl, '_blank', 'width=500,height=600');
+
+      // Open the authentication URL in a popup window
+      const authWindow = window.open(data.authUrl, '_blank', 'width=500,height=600');
+
+      // Poll the popup window to detect when it closes
+      const pollTimer = window.setInterval(() => {
+        if (authWindow.closed) {
+          window.clearInterval(pollTimer);
+          // Reload or re-fetch tokens here
+          window.location.reload();
+        }
+      }, 1000);
     } catch (error) {
       console.error('Error initiating authentication:', error);
     }
@@ -49,7 +70,7 @@ const YoutubeMetadataUpdater = () => {
       const jsonData = XLSX.utils.sheet_to_json(firstSheet);
 
       const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://trend-analysis-website-server.vercel.app';
-      
+
       try {
         const response = await fetch(`${baseUrl}/api/youtube/update-metadata`, {
           method: 'POST',

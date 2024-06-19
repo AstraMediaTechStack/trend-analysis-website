@@ -5,7 +5,9 @@ const path = require('path');
 require('dotenv').config();
 
 const router = express.Router();
-const TOKEN_PATH = path.join(__dirname, '../tokens.json');
+const dbPath = path.join(__dirname, '../tokens.db');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database(dbPath);
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -37,18 +39,14 @@ router.get('/oauth2callback', async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
-    // Read existing tokens
-    let tokenData = {};
-    if (fs.existsSync(TOKEN_PATH)) {
-      tokenData = JSON.parse(fs.readFileSync(TOKEN_PATH));
-    }
-
-    // Store the tokens in the tokens.json file
-    tokenData[username] = tokens;
-    fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokenData));
-
-    // Send a success response or redirect to a success page
-    res.send('Authentication successful! You can close this tab.');
+    // Store the tokens in the SQLite database
+    db.run("INSERT OR REPLACE INTO tokens (username, tokens) VALUES (?, ?)", [username, JSON.stringify(tokens)], (err) => {
+      if (err) {
+        console.error('Error storing tokens:', err);
+        return res.status(500).send('Error storing authentication tokens');
+      }
+      res.send('<script>window.close();</script>'); // Close the popup window after authentication
+    });
   } catch (error) {
     console.error('Error during OAuth2 callback:', error);
     res.status(500).send('Authentication failed');
