@@ -320,7 +320,7 @@ const KeywordTrendAnalyzer = () => {
                 </thead>
                 <tbody>
                   {console.log(result.data)}
-                  {result.data && result.data.relatedQueries && result.data.relatedQueries.default && result.data.relatedQueries.default.rankedList.length > 0 && result.data.relatedQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
+                  {result.data && result.data.relatedQueries && result.data.relatedQueries.default.rankedList.length > 0 && result.data.relatedQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
                     <tr key={index}>
                       <td>{item.query}</td>
                       <td>{item.value}</td>
