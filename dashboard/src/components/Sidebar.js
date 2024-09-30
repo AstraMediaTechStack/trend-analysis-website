@@ -38,6 +38,9 @@ const Sidebar = () => {
         </li>
         <li className="nav-item">
           <Link to="/register" className="nav-link">Sign Up</Link>
+        </li>            
+        <li className="nav-item">
+          <Link to="/facebook-manager" className="nav-link">Facebook Video Manager</Link>
         </li>
       </ul>
     </aside>

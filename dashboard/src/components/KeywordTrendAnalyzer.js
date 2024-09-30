@@ -104,6 +104,7 @@ const KeywordTrendAnalyzer = () => {
       const descriptions = {};
       for (const result of results) {
         if (result.data) {
+          console.log(result.data);
           const description = await generateDescription(result.keyword, filterForJanuary(result.data.interestOverTime.default.timelineData), result.data.monthlyAverages);
           descriptions[result.keyword] = description;
         }
@@ -318,7 +319,8 @@ const KeywordTrendAnalyzer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {result.data && result.data.relatedQueries && result.data.relatedQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
+                  {console.log(result.data)}
+                  {result.data && result.data.relatedQueries && result.data.relatedQueries.default && result.data.relatedQueries.default.rankedList.length > 0 && result.data.relatedQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
                     <tr key={index}>
                       <td>{item.query}</td>
                       <td>{item.value}</td>
@@ -345,7 +347,7 @@ const KeywordTrendAnalyzer = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {result.data && result.data.risingQueries && result.data.risingQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
+                  {result.data && result.data.risingQueries && result.data.risingQueries.default.rankedList.length > 0 &&result.data.risingQueries.default.rankedList[0].rankedKeyword.map((item, index) => (
                     <tr key={index}>
                       <td>{item.query}</td>
                       <td>{item.value}</td>

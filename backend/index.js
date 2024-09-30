@@ -8,6 +8,7 @@ const youtubeMetadataController = require('./controllers/youtubeMetadataControll
 const { resourcesettings } = require('googleapis/build/src/apis/resourcesettings');
 const authController = require('./controllers/authController');
 const session = require('express-session');
+const facebookRoutes = require('./routes/facebookRoutes')
 
 
 
@@ -22,6 +23,8 @@ app.use('/api', keywordRoutes);
 app.post('/api/generate-description', generateDescription);
 app.use('/api/youtube', youtubeTrendsRoutes);
 app.use('/api/auth', authController);
+app.use('/api/facebook', facebookRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

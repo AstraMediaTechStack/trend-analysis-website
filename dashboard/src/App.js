@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import KeywordTrendAnalyzer from './components/KeywordTrendAnalyzer';
 import YoutubeMetadataUpdater from './components/YoutubeMetadataUpdater';
 import YoutubeTopTrendsPage from './pages/YoutubeTopTrendsPage';
+import FacebookVideoManager from './components/FacebookVideoManager';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 
@@ -21,7 +22,7 @@ function App() {
             <Route path="/youtube-trends" element={<YoutubeTopTrendsPage />} />
             <Route path="/youtube-metadata" element={<YoutubeMetadataUpdater />} />
             <Route path="/authenticated" component={YoutubeMetadataUpdater} />
-
+            <Route path="/facebook-manager" element={<FacebookVideoManager />} />
           </Routes>
         </div>
       </div>
